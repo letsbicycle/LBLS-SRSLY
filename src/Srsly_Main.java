@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -26,12 +27,13 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
  * /**************************************************************************************************************
  */
 
-public class Srsly_Main extends JFrame implements ActionListener {
+public class Srsly_Main extends JFrame implements ActionListener
+{
     private JPanel panel;
     private JButton chooseFile, writeLabelFile;
     private JTextField fileNameField;
     private JLabel instructionLabel, fileNameLabel;
-    private String instructions = "You better not have used commas in the data fields!";
+    private String instructions = "Superfluous commas will cause suffering!!";
     private String labelFileName = "Labels_Srsly";
     private File sourcefile, destinationFile;
 
@@ -39,6 +41,8 @@ public class Srsly_Main extends JFrame implements ActionListener {
     private int num_of_labels, num_of_pages;
 
     private PDDocument pdDoc;
+    private PDFont font;
+    private PDPageContentStream writer;
 
 
     public Srsly_Main() {
@@ -60,7 +64,7 @@ public class Srsly_Main extends JFrame implements ActionListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         instructionLabel = new JLabel(instructions);
         panel.add(instructionLabel);
-        chooseFile = new JButton("Select the source file, which is totally a .csv");
+        chooseFile = new JButton("Select the source .csv file");
         chooseFile.addActionListener(this);
         panel.add(chooseFile);
         fileNameLabel = new JLabel("Name the output file:");
@@ -94,7 +98,7 @@ public class Srsly_Main extends JFrame implements ActionListener {
         final JFileChooser fc = new JFileChooser();
         //fc.addChoosableFileFilter(new ImageFilter());
         fc.setAcceptAllFileFilterUsed(false);
-        fc.setFileFilter(new ImageFilter());
+        fc.setFileFilter(new CSV_Filter());
 
         int returnVal = fc.showOpenDialog(Srsly_Main.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -150,150 +154,282 @@ public class Srsly_Main extends JFrame implements ActionListener {
         populate_ArrayList();
         num_of_labels = labels.size();
         num_of_pages = num_of_labels/6 + 1;
+        font = PDType1Font.HELVETICA_BOLD;
         try{
             pdDoc = new PDDocument();
             for(int i = 0; i< num_of_pages ; i++)
             {
                 PDPage pdPage = new PDPage();
                 pdDoc.addPage(pdPage);
-                PDFont font = PDType1Font.HELVETICA_BOLD;
-                PDPageContentStream writer = new PDPageContentStream(pdDoc, pdPage);
+                writer = new PDPageContentStream(pdDoc, pdPage);
                 writer.beginText();
-                writer.setFont( font, 16 );
+                writer.setFont( font, 17 );
 
                 //Move cursor to initial position and write first label
                 if(labels.size() > 0)
                 {
                     Label current_label = labels.pop();
-                    writer.moveTextPositionByAmount( 80, 680 );
+                    writer.moveTextPositionByAmount(80, 680);
                     writer.drawString(current_label.customer);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Classic: " + current_label.num_classic);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Seeded: " + current_label.num_seeded);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Kale: " + current_label.num_kale);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Rolls: " + current_label.num_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Pullmans: " + current_label.num_pullmans);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
+                    if(!current_label.num_classic.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Classic: " + current_label.num_classic);
+                    }
+                    if(!current_label.num_seeded.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Seeded: " + current_label.num_seeded);
+                    }
+                    if(!current_label.num_kale.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Kale: " + current_label.num_kale);
+                    }
+                    if(!current_label.num_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Rolls: " + current_label.num_rolls);
+                    }
+                    if(!current_label.num_pullmans.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Pullmans: " + current_label.num_pullmans);
+                    }
+                    if(!current_label.num_dinner_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
+                    }
+                    writer.moveTextPositionByAmount( 0, -20 );
                     writer.drawString("Box Size: " + current_label.box_size);
+                    writer.endText();
                 }
                 //Move cursor to second row, first column
                 if(labels.size() > 0)
                 {
                     Label current_label = labels.pop();
-                    writer.moveTextPositionByAmount( 0, -135 );  // CURSOR POSITION
+                    writer.beginText();
+                    writer.moveTextPositionByAmount(80, 440);  // CURSOR POSITION
                     writer.drawString(current_label.customer);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Classic: " + current_label.num_classic);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Seeded: " + current_label.num_seeded);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Kale: " + current_label.num_kale);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Rolls: " + current_label.num_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Pullmans: " + current_label.num_pullmans);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
+                    if(!current_label.num_classic.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Classic: " + current_label.num_classic);
+                    }
+                    if(!current_label.num_seeded.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Seeded: " + current_label.num_seeded);
+                    }
+                    if(!current_label.num_kale.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Kale: " + current_label.num_kale);
+                    }
+                    if(!current_label.num_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Rolls: " + current_label.num_rolls);
+                    }
+                    if(!current_label.num_pullmans.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Pullmans: " + current_label.num_pullmans);
+                    }
+                    if(!current_label.num_dinner_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
+                    }
+                    writer.moveTextPositionByAmount( 0, -20 );
                     writer.drawString("Box Size: " + current_label.box_size);
+                    writer.endText();
+
                 }
                 //Move cursor to third row, first column
                 if(labels.size() > 0)
                 {
                     Label current_label = labels.pop();
-                    writer.moveTextPositionByAmount( 0, -135 );  // CURSOR POSITION
+                    writer.beginText();
+                    writer.moveTextPositionByAmount(80, 200);  // CURSOR POSITION
                     writer.drawString(current_label.customer);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Classic: " + current_label.num_classic);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Seeded: " + current_label.num_seeded);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Kale: " + current_label.num_kale);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Rolls: " + current_label.num_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Pullmans: " + current_label.num_pullmans);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
+                    if(!current_label.num_classic.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Classic: " + current_label.num_classic);
+                    }
+                    if(!current_label.num_seeded.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Seeded: " + current_label.num_seeded);
+                    }
+                    if(!current_label.num_kale.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Kale: " + current_label.num_kale);
+                    }
+                    if(!current_label.num_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Rolls: " + current_label.num_rolls);
+                    }
+                    if(!current_label.num_pullmans.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Pullmans: " + current_label.num_pullmans);
+                    }
+                    if(!current_label.num_dinner_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
+                    }
+                    writer.moveTextPositionByAmount( 0, -20 );
                     writer.drawString("Box Size: " + current_label.box_size);
+                    writer.endText();
+
                 }
                 //Move cursor to first row, second column
                 if(labels.size() > 0)
                 {
                     Label current_label = labels.pop();
-                    writer.moveTextPositionByAmount( 280, 585 );  // CURSOR POSITION
+                    writer.beginText();
+                    writer.moveTextPositionByAmount(360, 680);  // CURSOR POSITION
                     writer.drawString(current_label.customer);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Classic: " + current_label.num_classic);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Seeded: " + current_label.num_seeded);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Kale: " + current_label.num_kale);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Rolls: " + current_label.num_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Pullmans: " + current_label.num_pullmans);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
+                    if(!current_label.num_classic.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Classic: " + current_label.num_classic);
+                    }
+                    if(!current_label.num_seeded.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Seeded: " + current_label.num_seeded);
+                    }
+                    if(!current_label.num_kale.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Kale: " + current_label.num_kale);
+                    }
+                    if(!current_label.num_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Rolls: " + current_label.num_rolls);
+                    }
+                    if(!current_label.num_pullmans.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Pullmans: " + current_label.num_pullmans);
+                    }
+                    if(!current_label.num_dinner_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
+                    }
+                    writer.moveTextPositionByAmount( 0, -20 );
                     writer.drawString("Box Size: " + current_label.box_size);
+                    writer.endText();
+
                 }
                 //Move cursor to second row, second column
                 if(labels.size() > 0)
                 {
                     Label current_label = labels.pop();
-                    writer.moveTextPositionByAmount( 0, -135 );  // CURSOR POSITION
+                    writer.beginText();
+                    writer.moveTextPositionByAmount(360, 440);  // CURSOR POSITION
                     writer.drawString(current_label.customer);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Classic: " + current_label.num_classic);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Seeded: " + current_label.num_seeded);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Kale: " + current_label.num_kale);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Rolls: " + current_label.num_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Pullmans: " + current_label.num_pullmans);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
+                    if(!current_label.num_classic.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Classic: " + current_label.num_classic);
+                    }
+                    if(!current_label.num_seeded.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Seeded: " + current_label.num_seeded);
+                    }
+                    if(!current_label.num_kale.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Kale: " + current_label.num_kale);
+                    }
+                    if(!current_label.num_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Rolls: " + current_label.num_rolls);
+                    }
+                    if(!current_label.num_pullmans.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Pullmans: " + current_label.num_pullmans);
+                    }
+                    if(!current_label.num_dinner_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
+                    }
+                    writer.moveTextPositionByAmount( 0, -20 );
                     writer.drawString("Box Size: " + current_label.box_size);
+                    writer.endText();
+
                 }
                 //Move cursor to third row, second column
                 if(labels.size() > 0)
                 {
                     Label current_label = labels.pop();
-                    writer.moveTextPositionByAmount( 0, -135 );  // CURSOR POSITION
+                    writer.beginText();
+                    writer.moveTextPositionByAmount(360, 200);  // CURSOR POSITION
                     writer.drawString(current_label.customer);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Classic: " + current_label.num_classic);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Seeded: " + current_label.num_seeded);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Kale: " + current_label.num_kale);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Rolls: " + current_label.num_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Pullmans: " + current_label.num_pullmans);
-                    writer.moveTextPositionByAmount( 0, -15 );
-                    writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
-                    writer.moveTextPositionByAmount( 0, -15 );
+                    if(!current_label.num_classic.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Classic: " + current_label.num_classic);
+                    }
+                    if(!current_label.num_seeded.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Seeded: " + current_label.num_seeded);
+                    }
+                    if(!current_label.num_kale.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Kale: " + current_label.num_kale);
+                    }
+                    if(!current_label.num_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Rolls: " + current_label.num_rolls);
+                    }
+                    if(!current_label.num_pullmans.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Pullmans: " + current_label.num_pullmans);
+                    }
+                    if(!current_label.num_dinner_rolls.equals("0"))
+                    {
+                        writer.moveTextPositionByAmount( 0, -20 );
+                        writer.drawString("Dinner rolls 12pk: " + current_label.num_dinner_rolls);
+                    }
+                    writer.moveTextPositionByAmount( 0, -20 );
                     writer.drawString("Box Size: " + current_label.box_size);
+                    writer.endText();
+
                 }
-                writer.endText();
+                //writer.endText();
                 writer.close();
             }
             pdDoc.save(destination);
             pdDoc.close();
-        } catch (Exception io){
-            System.out.println(io);
+        }
+        catch (IOException io)
+        {
+            JOptionPane.showMessageDialog(null, "Error time :( ! " + io.toString() );
+            io.printStackTrace();
+
+        } catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error time :( ! " + e.toString() );
+            e.printStackTrace();
         }
 
     }
@@ -392,7 +528,8 @@ class Label
 
 }
 
-class ImageFilter extends FileFilter
+class CSV_Filter extends FileFilter
+// This class is a filefilter for the filechooser, and filters out only .csv files.
 {
 
     //Accept all directories and only csv files
