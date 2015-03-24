@@ -72,7 +72,7 @@
       <file leaf-file-name="Srsly_Main.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Srsly_Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="446" column="20" selection-start="19421" selection-end="19421" vertical-scroll-proportion="0.31190926" vertical-offset="6525" max-vertical-offset="8610">
+            <state line="607" column="28" selection-start="27418" selection-end="27418" vertical-scroll-proportion="4.799622" vertical-offset="6566" max-vertical-offset="10560">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -276,7 +276,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
-    <property name="options.lastSelected" value="preferences.keymap" />
+    <property name="options.lastSelected" value="preferences.sourceCode.Java" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -549,7 +549,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Srsly_Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="446" column="20" selection-start="19421" selection-end="19421" vertical-scroll-proportion="0.31190926" vertical-offset="6525" max-vertical-offset="8610">
+        <state line="607" column="28" selection-start="27418" selection-end="27418" vertical-scroll-proportion="4.799622" vertical-offset="6566" max-vertical-offset="10560">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
