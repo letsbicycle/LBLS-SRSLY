@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Labels_Srsly:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Labels_Srsly_jar</output-path>
+    <root id="archive" name="Labels_Srsly.jar">
+      <element id="module-output" name="Labels_Srsly" />
+      <element id="extracted-dir" path="$USER_HOME$/Develop/apache/apache-pdf-box/pdfbox-app-1.8.8.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

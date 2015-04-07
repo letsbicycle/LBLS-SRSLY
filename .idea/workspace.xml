@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Labels_Srsly:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="80656ccc-d4be-4042-8e88-697086eb0a69" name="Default" comment="" />
     <ignored path="Labels_Srsly.iws" />
@@ -72,7 +77,7 @@
       <file leaf-file-name="Srsly_Main.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Srsly_Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="607" column="28" selection-start="27418" selection-end="27418" vertical-scroll-proportion="4.799622" vertical-offset="6566" max-vertical-offset="10560">
+            <state line="475" column="45" selection-start="19922" selection-end="19922" vertical-scroll-proportion="0.53677934" vertical-offset="6855" max-vertical-offset="10830">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -147,7 +152,20 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Labels_Srsly" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Labels_Srsly" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -272,7 +290,7 @@
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Develop/apache" />
     <property name="SearchEverywhereHistory" value="" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
@@ -549,7 +567,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Srsly_Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="607" column="28" selection-start="27418" selection-end="27418" vertical-scroll-proportion="4.799622" vertical-offset="6566" max-vertical-offset="10560">
+        <state line="475" column="45" selection-start="19922" selection-end="19922" vertical-scroll-proportion="0.53677934" vertical-offset="6855" max-vertical-offset="10830">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -562,10 +580,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>Labels_Srsly:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -621,6 +641,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>pdfbox-app-1.8.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
